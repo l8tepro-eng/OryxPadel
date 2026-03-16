@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>ORYX Padel — Qatar's First Padel Brand</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:ital,wght@0,300;0,400;0,600;0,700;0,800;0,900;1,700&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --black: #000000;
+    --white: #FFFFFF;
+    --off:   #F0F0F0;
+    --grey:  #888888;
+    --dark:  #0D0D0D;
+    --card:  #111111;
+    --border:#2A2A2A;
+    --gold:  #C8A84B;
+  }
+
+  *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
+  html { scroll-behavior:smooth; }
+  body { background:var(--black); color:var(--white); font-family:'Barlow',sans-serif; overflow-x:hidden; cursor:none; }
+
+  /* CURSOR */
+  .cursor { position:fixed; width:12px; height:12px; background:var(--white); border-radius:50%; pointer-events:none; z-index:9999; transform:translate(-50%,-50%); transition:width 0.2s,height 0.2s; mix-blend-mode:difference; }
+  .cursor-ring { position:fixed; width:40px; height:40px; border:1px solid rgba(255,255,255,0.4); border-radius:50%; pointer-events:none; z-index:9998; transform:translate(-50%,-50%); }
+
+  /* NAV */
+  nav { position:fixed; top:0; left:0; right:0; z-index:500; display:flex; align-items:center; justify-content:space-between; padding:20px 60px; }
+  .nav-logo { display:flex; align-items:center; gap:16px; text-decoration:none; }
+  .nav-logo img { height:48px; width:auto; filter:invert(1); }
+  .nav-links { display:flex; gap:48px; list-style:none; }
+  .nav-links a { font-family:'Barlow Condensed',sans-serif; font-size:12px; font-weight:600; letter-spacing:4px; text-transform:uppercase; color:rgba(255,255,255,0.45); text-decoration:none; transition:color 0.2s; }
+  .nav-links a:hover { color:var(--white); }
+  .nav-cta { font-family:'Barlow Condensed',sans-serif; font-size:12px; font-weight:700; letter-spacing:4px; text-transform:uppercase; color:var(--black); background:var(--white); padding:11px 28px; text-decoration:none; transition:opacity 0.2s; }
+  .nav-cta:hover { opacity:0.85; }
+
+  /* HERO */
+  .hero { position:relative; width:100%; height:100vh; overflow:hidden; background:var(--black); }
+  .hero video { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; opacity:0.4; filter:grayscale(100%) contrast(1.2); }
+  .hero-overlay { position:absolute; inset:0; background:linear-gradient(to bottom, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.6) 60%, rgba(0,0,0,0.95) 100%); }
+
+  .hero-content { position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:0 40px; }
+
+  .hero-logo { margin-bottom:32px; animation:fadeDown 1s ease both; }
+  .hero-logo img { height:120px; width:auto; filter:invert(1); opacity:0.95; }
+
+  .hero-title { font-family:'Bebas Neue', sans-serif; font-size:clamp(80px,16vw,220px); line-height:0.85; letter-spacing:8px; color:var(--white); animation:fadeUp 1s ease 0.1s both; position:relative; }
+  .hero-title::after { content:''; position:absolute; bottom:-12px; left:50%; transform:translateX(-50%); width:80px; height:2px; background:var(--white); }
+
+  .hero-badge { margin-top:40px; display:inline-flex; align-items:center; gap:12px; border:1px solid rgba(255,255,255,0.2); padding:10px 24px; animation:fadeUp 1s ease 0.2s both; }
+  .hero-badge <svg width="28" height="18" viewBox="0 0 28 18" xmlns="http://www.w3.org/2000/svg">
+  <rect width="28" height="18" fill="#8D1B3D"/>
+  <polygon points="0,0 9,0 12,1.5 9,3 12,4.5 9,6 12,7.5 9,9 12,10.5 9,12 12,13.5 9,15 12,16.5 9,18 0,18" fill="white"/>
+</svg> { flex-shrink:0; }
+  .hero-badge span { font-family:'Barlow Condensed',sans-serif; font-size:12px; font-weight:600; letter-spacing:4px; text-transform:uppercase; color:rgba(255,255,255,0.6); }
+  .hero-badge strong { font-family:'Barlow Condensed',sans-serif; font-size:12px; font-weight:700; letter-spacing:4px; text-transform:uppercase; color:var(--white); }
+
+  .hero-sub { margin-top:20px; font-family:'Barlow Condensed',sans-serif; font-size:14px; font-weight:400; letter-spacing:8px; text-transform:uppercase; color:rgba(255,255,255,0.3); animation:fadeUp 1s ease 0.3s both; }
+
+  .hero-btns { display:flex; gap:16px; margin-top:48px; animation:fadeUp 1s ease 0.4s both; }
+  .btn-w { background:var(--white); color:var(--black); font-family:'Barlow Condensed',sans-serif; font-size:13px; font-weight:800; letter-spacing:4px; text-transform:uppercase; padding:14px 44px; text-decoration:none; transition:opacity 0.2s; }
+  .btn-w:hover { opacity:0.85; }
+  .btn-ol { border:1px solid rgba(255,255,255,0.3); color:var(--white); font-family:'Barlow Condensed',sans-serif; font-size:13px; font-weight:600; letter-spacing:4px; text-transform:uppercase; padding:14px 44px; text-decoration:none; transition:border-color 0.2s,color 0.2s; display:flex; align-items:center; gap:10px; }
+  .btn-ol:hover { border-color:var(--white); }
+
+  .scroll-hint { position:absolute; bottom:36px; left:50%; transform:translateX(-50%); display:flex; flex-direction:column; align-items:center; gap:10px; animation:fadeUp 1.2s ease 1s both; }
+  .scroll-hint span { font-family:'Barlow Condensed',sans-serif; font-size:9px; font-weight:600; letter-spacing:5px; color:rgba(255,255,255,0.2); text-transform:uppercase; }
+  .scroll-line { width:1px; height:44px; background:linear-gradient(to bottom,rgba(255,255,255,0.4),transparent); animation:scrollPulse 2s ease infinite; }
+
+  /* TICKER */
+  .ticker { border-top:1px solid var(--border); border-bottom:1px solid var(--border); overflow:hidden; padding:14px 0; background:var(--dark); }
+  .ticker-inner { display:flex; animation:ticker 20s linear infinite; white-space:nowrap; }
+  .ticker-item { font-family:'Bebas Neue',sans-serif; font-size:18px; letter-spacing:6px; color:rgba(255,255,255,0.25); padding:0 48px; text-transform:uppercase; }
+  .ticker-item.highlight { color:var(--white); }
+  .ticker-sep { color:rgba(255,255,255,0.1); }
+
+  /* QATAR FIRST SECTION */
+  .qatar-section { padding:100px 0; background:var(--black); overflow:hidden; position:relative; }
+  .qatar-bg-text { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); font-family:'Bebas Neue',sans-serif; font-size:clamp(100px,20vw,280px); color:transparent; -webkit-text-stroke:1px rgba(255,255,255,0.03); white-space:nowrap; letter-spacing:-4px; pointer-events:none; user-select:none; }
+  .qatar-inner { max-width:900px; margin:0 auto; text-align:center; padding:0 40px; position:relative; z-index:2; }
+  .qatar-flag-big { display:flex; justify-content:center; margin-bottom:32px; }
+  .qatar-eyebrow { font-family:'Barlow Condensed',sans-serif; font-size:11px; font-weight:700; letter-spacing:6px; text-transform:uppercase; color:rgba(255,255,255,0.3); margin-bottom:24px; display:block; }
+  .qatar-title { font-family:'Bebas Neue',sans-serif; font-size:clamp(48px,8vw,100px); line-height:0.92; letter-spacing:4px; color:var(--white); margin-bottom:32px; }
+  .qatar-title em { color:rgba(255,255,255,0.25); font-style:normal; }
+  .qatar-divider { width:60px; height:1px; background:var(--white); margin:0 auto 32px; }
+  .qatar-desc { font-size:16px; font-weight:300; color:rgba(255,255,255,0.45); line-height:1.9; max-width:600px; margin:0 auto; }
+
+  /* PRODUCTS SLIDER */
+  .products-section { padding:100px 0; background:var(--dark); overflow:hidden; }
+  .products-header { padding:0 80px; display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:56px; }
+  .sec-eyebrow { font-family:'Barlow Condensed',sans-serif; font-size:11px; font-weight:700; letter-spacing:6px; text-transform:uppercase; color:rgba(255,255,255,0.3); display:block; margin-bottom:12px; }
+  .sec-title { font-family:'Bebas Neue',sans-serif; font-size:clamp(44px,6vw,80px); letter-spacing:4px; color:var(--white); line-height:1; }
+  .slider-controls { display:flex; gap:12px; }
+  .slider-btn { width:48px; height:48px; border:1px solid var(--border); background:transparent; color:var(--white); cursor:pointer; font-size:18px; transition:background 0.2s,border-color 0.2s; display:flex; align-items:center; justify-content:center; }
+  .slider-btn:hover { background:var(--white); color:var(--black); border-color:var(--white); }
+
+  .slider-track-wrap { overflow:hidden; padding:0 80px; }
+  .slider-track { display:flex; gap:20px; transition:transform 0.5s cubic-bezier(0.25,0.46,0.45,0.94); }
+
+  .product-slide { flex:0 0 calc(33.333% - 14px); background:var(--card); border:1px solid var(--border); position:relative; transition:transform 0.3s,border-color 0.3s; cursor:pointer; }
+  .product-slide:hover { transform:translateY(-8px); border-color:rgba(255,255,255,0.3); }
+  .product-slide::before { content:''; position:absolute; top:0; left:0; right:0; height:2px; background:var(--white); transform:scaleX(0); transform-origin:left; transition:transform 0.4s ease; }
+  .product-slide:hover::before { transform:scaleX(1); }
+
+  .product-img-wrap { position:relative; background:var(--black); padding:48px 40px; display:flex; align-items:center; justify-content:center; }
+  .product-img-wrap img { width:100%; max-height:260px; object-fit:contain; transition:transform 0.4s ease; }
+  .product-slide:hover .product-img-wrap img { transform:scale(1.06); }
+
+  .qatar-badge { position:absolute; top:16px; right:16px; display:flex; align-items:center; gap:6px; background:rgba(0,0,0,0.8); border:1px solid var(--border); padding:5px 10px; }
+  .qatar-badge span { font-family:'Barlow Condensed',sans-serif; font-size:9px; font-weight:700; letter-spacing:3px; text-transform:uppercase; color:rgba(255,255,255,0.5); }
+
+  .product-info { padding:24px 28px; border-top:1px solid var(--border); }
+  .product-name { font-family:'Bebas Neue',sans-serif; font-size:28px; letter-spacing:3px; color:var(--white); display:block; margin-bottom:4px; }
+  .product-line { font-family:'Barlow Condensed',sans-serif; font-size:10px; font-weight:600; letter-spacing:4px; text-transform:uppercase; color:rgba(255,255,255,0.3); display:block; margin-bottom:16px; }
+  .product-tags { display:flex; gap:8px; flex-wrap:wrap; }
+  .p-tag { font-family:'Barlow Condensed',sans-serif; font-size:9px; font-weight:700; letter-spacing:3px; text-transform:uppercase; padding:4px 10px; border:1px solid var(--border); color:rgba(255,255,255,0.4); }
+  .p-tag.active { border-color:var(--white); color:var(--white); }
+
+  .slider-dots { display:flex; justify-content:center; gap:8px; margin-top:40px; }
+  .dot { width:24px; height:2px; background:var(--border); cursor:pointer; transition:background 0.2s,width 0.2s; }
+  .dot.active { background:var(--white); width:48px; }
+
+  /* LOGO SECTION — big geometric display */
+  .logo-section { padding:120px 80px; background:var(--black); display:grid; grid-template-columns:1fr 1fr; gap:80px; align-items:center; }
+  .logo-display { position:relative; display:flex; align-items:center; justify-content:center; }
+  .logo-display::before { content:''; position:absolute; width:400px; height:400px; border:1px solid rgba(255,255,255,0.05); border-radius:50%; }
+  .logo-display::after { content:''; position:absolute; width:480px; height:480px; border:1px dashed rgba(255,255,255,0.03); border-radius:50%; animation:spinSlow 25s linear infinite; }
+  .logo-display img { width:280px; height:auto; filter:invert(1); opacity:0.9; position:relative; z-index:2; }
+  .logo-text-block { display:flex; flex-direction:column; gap:0; }
+  .lt-eyebrow { font-family:'Barlow Condensed',sans-serif; font-size:11px; font-weight:700; letter-spacing:6px; text-transform:uppercase; color:rgba(255,255,255,0.25); margin-bottom:20px; display:block; }
+  .lt-title { font-family:'Bebas Neue',sans-serif; font-size:clamp(52px,7vw,96px); line-height:0.9; letter-spacing:2px; color:var(--white); margin-bottom:32px; }
+  .lt-title .dim { color:rgba(255,255,255,0.18); }
+  .lt-divider { width:48px; height:1px; background:var(--white); margin-bottom:28px; }
+  .lt-body { font-size:14px; font-weight:300; color:rgba(255,255,255,0.4); line-height:1.85; margin-bottom:14px; }
+  .lt-stats { display:flex; gap:48px; margin-top:36px; padding-top:36px; border-top:1px solid var(--border); }
+  .st-num { font-family:'Bebas Neue',sans-serif; font-size:52px; color:var(--white); line-height:1; display:block; }
+  .st-lbl { font-family:'Barlow Condensed',sans-serif; font-size:10px; font-weight:600; letter-spacing:3px; text-transform:uppercase; color:rgba(255,255,255,0.25); margin-top:4px; display:block; }
+
+  /* FEATURES */
+  .feat-section { background:var(--dark); display:grid; grid-template-columns:repeat(4,1fr); }
+  .feat-item { padding:60px 40px; border-right:1px solid var(--border); position:relative; transition:background 0.2s; }
+  .feat-item:last-child { border-right:none; }
+  .feat-item:hover { background:var(--card); }
+  .feat-item::after { content:''; position:absolute; top:0; left:0; right:0; height:2px; background:var(--white); transform:scaleX(0); transform-origin:left; transition:transform 0.3s; }
+  .feat-item:hover::after { transform:scaleX(1); }
+  .feat-n { font-family:'Barlow Condensed',sans-serif; font-size:10px; font-weight:700; letter-spacing:4px; color:rgba(255,255,255,0.2); text-transform:uppercase; margin-bottom:24px; display:block; }
+  .feat-item h4 { font-family:'Bebas Neue',sans-serif; font-size:26px; letter-spacing:2px; color:var(--white); margin-bottom:14px; }
+  .feat-item p { font-size:13px; font-weight:300; color:rgba(255,255,255,0.35); line-height:1.75; }
+
+  /* CTA */
+  .cta-section { position:relative; overflow:hidden; padding:120px 80px; background:var(--white); text-align:center; }
+  .cta-bg-logo { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); opacity:0.04; }
+  .cta-bg-logo img { width:600px; height:auto; filter:invert(0); }
+  .cta-eyebrow { font-family:'Barlow Condensed',sans-serif; font-size:11px; font-weight:700; letter-spacing:6px; text-transform:uppercase; color:rgba(0,0,0,0.35); display:block; margin-bottom:20px; position:relative; z-index:2; }
+  .cta-title { font-family:'Bebas Neue',sans-serif; font-size:clamp(64px,12vw,160px); line-height:0.85; letter-spacing:4px; color:var(--black); margin-bottom:20px; position:relative; z-index:2; }
+  .cta-sub { font-size:14px; font-weight:300; color:rgba(0,0,0,0.4); margin-bottom:48px; letter-spacing:2px; position:relative; z-index:2; }
+  .cta-btns { display:flex; gap:16px; justify-content:center; position:relative; z-index:2; }
+  .btn-black { background:var(--black); color:var(--white); font-family:'Barlow Condensed',sans-serif; font-size:13px; font-weight:800; letter-spacing:4px; text-transform:uppercase; padding:16px 48px; text-decoration:none; display:flex; align-items:center; gap:12px; transition:opacity 0.2s; }
+  .btn-black:hover { opacity:0.85; }
+  .btn-ol-black { border:2px solid rgba(0,0,0,0.2); color:var(--black); font-family:'Barlow Condensed',sans-serif; font-size:13px; font-weight:700; letter-spacing:4px; text-transform:uppercase; padding:16px 48px; text-decoration:none; display:flex; align-items:center; gap:10px; transition:border-color 0.2s; }
+  .btn-ol-black:hover { border-color:var(--black); }
+
+  /* FOOTER */
+  footer { background:var(--black); border-top:1px solid var(--border); padding:60px 80px; display:grid; grid-template-columns:1.5fr 1fr 1fr; gap:60px; }
+  .ftr-logo { display:flex; align-items:center; gap:16px; margin-bottom:16px; }
+  .ftr-logo img { height:44px; width:auto; filter:invert(1); opacity:0.7; }
+  .ftr-brand { font-family:'Bebas Neue',sans-serif; font-size:24px; letter-spacing:6px; color:var(--white); }
+  .ftr-tag { font-family:'Barlow Condensed',sans-serif; font-size:11px; font-weight:400; color:rgba(255,255,255,0.25); letter-spacing:3px; text-transform:uppercase; }
+  .ftr-col h5 { font-family:'Barlow Condensed',sans-serif; font-size:10px; font-weight:700; letter-spacing:5px; text-transform:uppercase; color:rgba(255,255,255,0.3); margin-bottom:20px; }
+  .ftr-col a, .ftr-col p { font-size:13px; font-weight:300; color:rgba(255,255,255,0.3); text-decoration:none; display:block; line-height:2.2; transition:color 0.2s; }
+  .ftr-col a:hover { color:var(--white); }
+  .footer-bottom { padding:20px 80px; background:var(--dark); border-top:1px solid var(--border); display:flex; justify-content:space-between; align-items:center; }
+  .footer-bottom p { font-family:'Barlow Condensed',sans-serif; font-size:10px; font-weight:400; color:rgba(255,255,255,0.2); letter-spacing:3px; text-transform:uppercase; }
+
+  /* ANIMS */
+  @keyframes fadeUp { from{opacity:0;transform:translateY(28px)} to{opacity:1;transform:translateY(0)} }
+  @keyframes fadeDown { from{opacity:0;transform:translateY(-20px)} to{opacity:1;transform:translateY(0)} }
+  @keyframes ticker { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+  @keyframes spinSlow { from{transform:rotate(0deg)} to{transform:rotate(360deg)} }
+  @keyframes scrollPulse { 0%,100%{opacity:0.3} 50%{opacity:0.9} }
+  .reveal { opacity:1; transform:none; }
+  .reveal.visible { opacity:1; transform:translateY(0); }
+
+  @media(max-width:1024px){
+    nav { padding:16px 24px; } .nav-links { display:none; }
+    .hero-content { padding:0 24px; }
+    .qatar-section,.logo-section { padding:80px 24px; }
+    .logo-section { grid-template-columns:1fr; }
+    .logo-display { display:none; }
+    .products-header { padding:0 24px; }
+    .slider-track-wrap { padding:0 24px; }
+    .product-slide { flex:0 0 calc(80% - 10px); }
+    .feat-section { grid-template-columns:1fr 1fr; }
+    .feat-item { border-bottom:1px solid var(--border); }
+    .cta-section { padding:80px 24px; }
+    footer { padding:60px 24px; grid-template-columns:1fr; gap:40px; }
+    .footer-bottom { padding:20px 24px; flex-direction:column; gap:8px; text-align:center; }
+  }
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">
+    <img src="logo.png" alt="Oryx Padel">
+  </a>
+  <ul class="nav-links">
+    <li><a href="#products">Products</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <a href="https://wa.me/97466662346" class="nav-cta">Order Now</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <video autoplay muted loop playsinline>
+    <source src="video.mp4" type="video/mp4">
+  </video>
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <div class="hero-logo">
+      <img src="logo.png" alt="Oryx">
+    </div>
+    <h1 class="hero-title">ORYX</h1>
+    <div class="hero-badge">
+      <svg width="28" height="18" viewBox="0 0 28 18" xmlns="http://www.w3.org/2000/svg">
+  <rect width="28" height="18" fill="#8D1B3D"/>
+  <polygon points="0,0 9,0 12,1.5 9,3 12,4.5 9,6 12,7.5 9,9 12,10.5 9,12 12,13.5 9,15 12,16.5 9,18 0,18" fill="white"/>
+</svg>
+      <span>Qatar's</span>
+      <strong>First Padel Brand</strong>
+    </div>
+    <p class="hero-sub">Own · The · Court</p>
+    <div class="hero-btns">
+      <a href="https://wa.me/97466662346" class="btn-w">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="black"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+        Order on WhatsApp
+      </a>
+      <a href="https://www.instagram.com/oryx_padel" target="_blank" class="btn-ol">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><circle cx="16.5" cy="7.5" r="1"/></svg>
+        @oryx_padel
+      </a>
+    </div>
+  </div>
+  <div class="scroll-hint">
+    <div class="scroll-line"></div>
+    <span>Scroll</span>
+  </div>
+</section>
+
+<!-- TICKER -->
+<div class="ticker">
+  <div class="ticker-inner">
+    <span class="ticker-item highlight">ORYX PADEL</span>
+    <span class="ticker-sep"> · </span>
+    <span class="ticker-item">QATAR'S FIRST PADEL BRAND</span>
+    <span class="ticker-sep"> · </span>
+    <span class="ticker-item highlight">OWN THE COURT</span>
+    <span class="ticker-sep"> · </span>
+    <span class="ticker-item">APEX SERIES</span>
+    <span class="ticker-sep"> · </span>
+    <span class="ticker-item highlight">MADE FOR CHAMPIONS</span>
+    <span class="ticker-sep"> · </span>
+    <span class="ticker-item">ORYX PADEL</span>
+    <span class="ticker-sep"> · </span>
+    <span class="ticker-item">QATAR'S FIRST PADEL BRAND</span>
+    <span class="ticker-sep"> · </span>
+    <span class="ticker-item highlight">OWN THE COURT</span>
+    <span class="ticker-sep"> · </span>
+    <span class="ticker-item">APEX SERIES</span>
+    <span class="ticker-sep"> · </span>
+    <span class="ticker-item highlight">MADE FOR CHAMPIONS</span>
+    <span class="ticker-sep"> · </span>
+  </div>
+</div>
+
+<!-- QATAR FIRST -->
+<section class="qatar-section">
+  <div class="qatar-bg-text">ORYX</div>
+  <div class="qatar-inner">
+    <div class="qatar-flag-big reveal">
+      <svg width="64" height="42" viewBox="0 0 64 42" xmlns="http://www.w3.org/2000/svg">
+        <rect width="64" height="42" fill="#8D1B3D"/>
+        <polygon points="0,0 22,0 28,3.5 22,7 28,10.5 22,14 28,17.5 22,21 28,24.5 22,28 28,31.5 22,35 28,38.5 22,42 0,42" fill="white"/>
+      </svg>
+    </div>
+    <span class="qatar-eyebrow reveal">A Historic First</span>
+    <h2 class="qatar-title reveal">QATAR'S FIRST<br><em>PADEL BRAND</em></h2>
+    <div class="qatar-divider reveal"></div>
+    <p class="qatar-desc reveal">Oryx Padel is the first padel brand born in Qatar — built by players, for players. Inspired by the oryx, Qatar's national symbol of strength and grace, our equipment is engineered to give every player the edge they need to dominate the court.</p>
+  </div>
+</section>
+
+<!-- PRODUCTS SLIDER -->
+<section class="products-section" id="products">
+  <div class="products-header reveal">
+    <div>
+      <span class="sec-eyebrow">The Collection</span>
+      <h2 class="sec-title">PRODUCTS</h2>
+    </div>
+    <div class="slider-controls">
+      <button class="slider-btn" id="prevBtn">&#8592;</button>
+      <button class="slider-btn" id="nextBtn">&#8594;</button>
+    </div>
+  </div>
+
+  <div class="slider-track-wrap">
+    <div class="slider-track" id="sliderTrack">
+
+      <!-- Apex Gold -->
+      <div class="product-slide">
+        <div class="product-img-wrap">
+          <img src="apex_gold.png" alt="Apex Gold">
+          <div class="qatar-badge">
+            <svg width="20" height="13" viewBox="0 0 28 18" xmlns="http://www.w3.org/2000/svg"><rect width="28" height="18" fill="#8D1B3D"/><polygon points="0,0 9,0 12,1.5 9,3 12,4.5 9,6 12,7.5 9,9 12,10.5 9,12 12,13.5 9,15 12,16.5 9,18 0,18" fill="white"/></svg>
+            <span>Qatar Brand</span>
+          </div>
+        </div>
+        <div class="product-info">
+          <span class="product-name">Apex Gold</span>
+          <span class="product-line">Padel Racket · Flagship</span>
+          <div class="product-tags">
+            <span class="p-tag active">Carbon Fibre</span>
+            <span class="p-tag active">Power</span>
+            <span class="p-tag active">Flagship</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Apex Grey -->
+      <div class="product-slide">
+        <div class="product-img-wrap">
+          <img src="apex_grey.png" alt="Apex Grey">
+          <div class="qatar-badge">
+            <svg width="20" height="13" viewBox="0 0 28 18" xmlns="http://www.w3.org/2000/svg"><rect width="28" height="18" fill="#8D1B3D"/><polygon points="0,0 9,0 12,1.5 9,3 12,4.5 9,6 12,7.5 9,9 12,10.5 9,12 12,13.5 9,15 12,16.5 9,18 0,18" fill="white"/></svg>
+            <span>Qatar Brand</span>
+          </div>
+        </div>
+        <div class="product-info">
+          <span class="product-name">Apex Grey</span>
+          <span class="product-line">Padel Racket · Power</span>
+          <div class="product-tags">
+            <span class="p-tag active">Carbon Fibre</span>
+            <span class="p-tag active">Power</span>
+            <span class="p-tag">Control</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Apex Blue -->
+      <div class="product-slide">
+        <div class="product-img-wrap">
+          <img src="apex_blue.png" alt="Apex Comfort Blue">
+          <div class="qatar-badge">
+            <svg width="20" height="13" viewBox="0 0 28 18" xmlns="http://www.w3.org/2000/svg"><rect width="28" height="18" fill="#8D1B3D"/><polygon points="0,0 9,0 12,1.5 9,3 12,4.5 9,6 12,7.5 9,9 12,10.5 9,12 12,13.5 9,15 12,16.5 9,18 0,18" fill="white"/></svg>
+            <span>Qatar Brand</span>
+          </div>
+        </div>
+        <div class="product-info">
+          <span class="product-name">Apex Comfort</span>
+          <span class="product-line">Padel Racket · Comfort</span>
+          <div class="product-tags">
+            <span class="p-tag active">Comfort</span>
+            <span class="p-tag active">Control</span>
+            <span class="p-tag">All-Level</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Balls -->
+      <div class="product-slide">
+        <div class="product-img-wrap">
+          <img src="balls.png" alt="Oryx Balls">
+          <div class="qatar-badge">
+            <svg width="20" height="13" viewBox="0 0 28 18" xmlns="http://www.w3.org/2000/svg"><rect width="28" height="18" fill="#8D1B3D"/><polygon points="0,0 9,0 12,1.5 9,3 12,4.5 9,6 12,7.5 9,9 12,10.5 9,12 12,13.5 9,15 12,16.5 9,18 0,18" fill="white"/></svg>
+            <span>Qatar Brand</span>
+          </div>
+        </div>
+        <div class="product-info">
+          <span class="product-name">Oryx Balls</span>
+          <span class="product-line">Premium Padel Balls · 3-Pack</span>
+          <div class="product-tags">
+            <span class="p-tag active">Pro Grade</span>
+            <span class="p-tag active">Pressurised</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Grips -->
+      <div class="product-slide">
+        <div class="product-img-wrap">
+          <img src="grips.png" alt="Oryx Over Grips">
+          <div class="qatar-badge">
+            <svg width="20" height="13" viewBox="0 0 28 18" xmlns="http://www.w3.org/2000/svg"><rect width="28" height="18" fill="#8D1B3D"/><polygon points="0,0 9,0 12,1.5 9,3 12,4.5 9,6 12,7.5 9,9 12,10.5 9,12 12,13.5 9,15 12,16.5 9,18 0,18" fill="white"/></svg>
+            <span>Qatar Brand</span>
+          </div>
+        </div>
+        <div class="product-info">
+          <span class="product-name">Over Grips</span>
+          <span class="product-line">Premium Overgrip Tape</span>
+          <div class="product-tags">
+            <span class="p-tag active">Tacky</span>
+            <span class="p-tag active">Moisture-Wick</span>
+          </div>
+        </div>
+      </div>
+
+
+      <!-- Socks -->
+      <div class="product-slide">
+        <div class="product-img-wrap">
+          <img src="socks.png" alt="Oryx Padel Socks">
+          <div class="qatar-badge">
+            <svg width="20" height="13" viewBox="0 0 28 18" xmlns="http://www.w3.org/2000/svg"><rect width="28" height="18" fill="#8D1B3D"/><polygon points="0,0 9,0 12,1.5 9,3 12,4.5 9,6 12,7.5 9,9 12,10.5 9,12 12,13.5 9,15 12,16.5 9,18 0,18" fill="white"/></svg>
+            <span>Qatar Brand</span>
+          </div>
+        </div>
+        <div class="product-info">
+          <span class="product-name">Oryx Socks</span>
+          <span class="product-line">Grip Padel Socks · Black &amp; White</span>
+          <div class="product-tags">
+            <span class="p-tag active">Anti-Slip</span>
+            <span class="p-tag active">Grip Dots</span>
+            <span class="p-tag active">Pro</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="slider-dots" id="sliderDots">
+    <div class="dot active" data-index="0"></div>
+    <div class="dot" data-index="1"></div>
+    <div class="dot" data-index="2"></div>
+    <div class="dot" data-index="3"></div>
+    <div class="dot" data-index="4"></div>
+    <div class="dot" data-index="5"></div>
+  </div>
+</section>
+
+<!-- LOGO + ABOUT -->
+<section class="logo-section" id="about">
+  <div class="logo-display reveal">
+    <img src="logo.png" alt="Oryx Padel">
+  </div>
+  <div class="logo-text-block">
+    <span class="lt-eyebrow reveal">The Brand</span>
+    <h2 class="lt-title reveal">THE ORYX<br><span class="dim">SPIRIT</span></h2>
+    <div class="lt-divider reveal"></div>
+    <p class="lt-body reveal">The Arabian Oryx — Qatar's national animal — is a symbol of power, endurance, and elegance. That same spirit runs through every Oryx Padel product.</p>
+    <p class="lt-body reveal">As Qatar's first padel brand, we're here to put Qatari padel on the map. Built locally, designed for champions, engineered to last.</p>
+    <div class="lt-stats reveal">
+      <div><span class="st-num">3</span><span class="st-lbl">Rackets</span></div>
+      <div><span class="st-num">5</span><span class="st-lbl">Products</span></div>
+      <div><span class="st-num">#1</span><span class="st-lbl">Qatar Brand</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="feat-section">
+  <div class="feat-item reveal">
+    <span class="feat-n">01 / Build</span>
+    <h4>Carbon Fibre</h4>
+    <p>High-modulus carbon construction for maximum power transfer and precision on every shot.</p>
+  </div>
+  <div class="feat-item reveal">
+    <span class="feat-n">02 / Core</span>
+    <h4>Apex Technology</h4>
+    <p>Engineered foam core maximises the sweet spot and reduces vibration for a cleaner, more consistent feel.</p>
+  </div>
+  <div class="feat-item reveal">
+    <span class="feat-n">03 / Grip</span>
+    <h4>Pro Overgrips</h4>
+    <p>Tacky, moisture-wicking grip tape that performs from first serve to match point.</p>
+  </div>
+  <div class="feat-item reveal">
+    <span class="feat-n">04 / Origin</span>
+    <h4>Made in Qatar</h4>
+    <p>Qatar's first padel brand. Designed with pride, built for performance, representing a nation on the rise.</p>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section" id="contact">
+  <div class="cta-bg-logo">
+    <img src="logo.png" alt="">
+  </div>
+  <span class="cta-eyebrow reveal">Get Yours Now</span>
+  <h2 class="cta-title reveal">OWN THE<br>COURT</h2>
+  <p class="cta-sub reveal">Follow @oryx_padel on Instagram to order and see the latest drops.</p>
+  <div class="cta-btns reveal">
+    <a href="https://wa.me/97466662346" class="btn-black">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><defs><linearGradient id="ig4" x1="0%" y1="100%" x2="100%" y2="0%"><stop offset="0%" style="stop-color:#f09433"/><stop offset="50%" style="stop-color:#dc2743"/><stop offset="100%" style="stop-color:#bc1888"/></linearGradient></defs><rect x="2" y="2" width="20" height="20" rx="5" fill="url(#ig4)"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z" fill="white"/><circle cx="16.5" cy="7.5" r="1.1" fill="white"/></svg>
+      Order on WhatsApp
+    </a>
+    <a href="https://www.instagram.com/oryx_padel" target="_blank" class="btn-ol-black">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+      DM to Order
+    </a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div>
+    <div class="ftr-logo">
+      <img src="logo.png" alt="Oryx Padel">
+      <span class="ftr-brand">ORYX</span>
+    </div>
+    <p class="ftr-tag">Qatar's First Padel Brand</p>
+  </div>
+  <div class="ftr-col">
+    <h5>Products</h5>
+    <a href="#products">Apex Gold</a>
+    <a href="#products">Apex Grey</a>
+    <a href="#products">Apex Comfort Blue</a>
+    <a href="#products">Oryx Balls</a>
+    <a href="#products">Over Grips</a>
+    <a href="#products">Oryx Socks</a>
+  </div>
+  <div class="ftr-col">
+    <h5>Connect</h5>
+    <a href="https://wa.me/97466662346">WhatsApp: +974 6666 2346</a>
+    <a href="https://www.instagram.com/oryx_padel" target="_blank">Instagram: @oryx_padel</a>
+    <p style="margin-top:8px;">Qatar &mdash; Available to order now</p>
+  </div>
+</footer>
+<div class="footer-bottom">
+  <p>&copy; 2026 Oryx Padel · Qatar's First Padel Brand</p>
+  <p>Own The Court</p>
+</div>
+
+<script>
+  // Cursor
+  const cursor = document.getElementById('cursor');
+  const ring   = document.getElementById('cursorRing');
+  let mx=0,my=0,rx=0,ry=0;
+  document.addEventListener('mousemove', e=>{
+    mx=e.clientX; my=e.clientY;
+    cursor.style.left=mx+'px'; cursor.style.top=my+'px';
+  });
+  function animRing(){
+    rx+=(mx-rx)*0.13; ry+=(my-ry)*0.13;
+    ring.style.left=rx+'px'; ring.style.top=ry+'px';
+    requestAnimationFrame(animRing);
+  }
+  animRing();
+
+  // reveals visible by default
+
+  // Slider
+  const track  = document.getElementById('sliderTrack');
+  const dots   = document.querySelectorAll('.dot');
+  const slides = document.querySelectorAll('.product-slide');
+  let current  = 0;
+  const visible = () => window.innerWidth < 1024 ? 1 : 3;
+
+  function goTo(index){
+    const max = slides.length - visible();
+    current = Math.max(0, Math.min(index, max));
+    const slideW = slides[0].offsetWidth + 20;
+    track.style.transform = `translateX(-${current * slideW}px)`;
+    dots.forEach((d,i)=>d.classList.toggle('active', i===current));
+  }
+
+  document.getElementById('prevBtn').addEventListener('click',()=>goTo(current-1));
+  document.getElementById('nextBtn').addEventListener('click',()=>goTo(current+1));
+  dots.forEach(d=>d.addEventListener('click',()=>goTo(+d.dataset.index)));
+
+  // Touch swipe
+  let startX=0;
+  track.addEventListener('touchstart',e=>startX=e.touches[0].clientX);
+  track.addEventListener('touchend',e=>{
+    const diff = startX - e.changedTouches[0].clientX;
+    if(Math.abs(diff)>50) goTo(diff>0 ? current+1 : current-1);
+  });
+
+  // Auto-slide every 4s
+  setInterval(()=>{
+    const max = slides.length - visible();
+    goTo(current >= max ? 0 : current+1);
+  }, 4000);
+</script>
+</body>
+</html>
